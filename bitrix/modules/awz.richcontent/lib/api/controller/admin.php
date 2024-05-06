@@ -119,7 +119,7 @@ class Admin extends Controller
             $propList[$data['ID']] = '['.$data['CODE'].'] - '.$data['NAME'];
         }
         if(!$checkSystem){
-            $propList[$data['ID']] = '['.Helper::AWZ_PROP_SYSTEM.'] - '.Loc::getMessage('AWZ_RICHCONTENT_LIB_CONTROLLER_ADMIN_PROPNAME');
+            $propList[Helper::AWZ_PROP_SYSTEM] = '['.Helper::AWZ_PROP_SYSTEM.'] - '.Loc::getMessage('AWZ_RICHCONTENT_LIB_CONTROLLER_ADMIN_PROPNAME');
         }
 
         return $propList;
