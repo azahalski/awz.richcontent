@@ -208,7 +208,7 @@ class Helper {
 
     public static function generateFromElementData(array $data, string $type = ''){
         if(!$data['IBLOCK_ID']){
-            return throw new ArgumentNullException('IBLOCK_ID');
+            throw new ArgumentNullException('IBLOCK_ID');
         }
         if(!$data['PREVIEW_TEXT'] && !$data['DETAIL_TEXT']) return '';
         if($data['PREVIEW_TEXT'] && !isset($data['PREVIEW_TEXT_TYPE'])) return '';

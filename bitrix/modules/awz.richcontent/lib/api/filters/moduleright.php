@@ -40,7 +40,7 @@ class ModuleRight extends BaseFilter {
 
         $module_id = $this->getParams()->get('module_id');
         if(!$module_id){
-            return throw new ArgumentNullException('module_id');
+            throw new ArgumentNullException('module_id');
         }
         if(Loader::includeModule($module_id)){
             global $APPLICATION;

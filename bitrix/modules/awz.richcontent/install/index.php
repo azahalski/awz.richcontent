@@ -25,7 +25,7 @@ class awz_richcontent extends CModule
 
         $this->MODULE_NAME = Loc::getMessage("AWZ_RICHCONTENT_MODULE_NAME");
         $this->MODULE_DESCRIPTION = Loc::getMessage("AWZ_RICHCONTENT_MODULE_DESCRIPTION");
-		$this->PARTNER_NAME = Loc::getMessage("AWZ_PARTNER_NAME");
+		$this->PARTNER_NAME = Loc::getMessage("AWZ_COMPANY_NAME");
 		$this->PARTNER_URI = "https://zahalski.dev/";
 
 		return true;

@@ -34,7 +34,6 @@ class HandlersBx {
                 if($setProp){
                     \CIBlockElement::SetPropertyValues($arFields['ID'], $arFields['IBLOCK_ID'], $txt, $propId);
                 }
-
             }
         }
     }
