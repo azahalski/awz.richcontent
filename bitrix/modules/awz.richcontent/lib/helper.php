@@ -1,6 +1,7 @@
 <?php
 namespace Awz\RichContent;
 
+use Bitrix\Main\Application;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Text\HtmlConverter;
@@ -197,7 +198,11 @@ class Helper {
 
         }
 
-        return Json::encode($json, JSON_UNESCAPED_UNICODE );
+        if(Application::isUtfMode()){
+            return Json::encode($json, JSON_UNESCAPED_UNICODE );
+        }else{
+            return Json::encode($json);
+        }
 
     }
 
