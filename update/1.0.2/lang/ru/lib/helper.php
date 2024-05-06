@@ -1,0 +1,2 @@
+<?
+$MESS['AWZ_RICHCONTENT_LIB_HELPER_PROPNAME'] = 'Разметка RichContent';
