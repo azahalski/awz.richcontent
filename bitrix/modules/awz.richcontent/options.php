@@ -54,8 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $MODULE_RIGHT == "W" && strlen($_REQ
             $checkIb[] = $iblockId;
             $key = 'IBLOCK_SETT_'.$iblockId;
             $key2 = 'IBLOCK_PROP_'.$iblockId;
+            $propVal = $request->get($key2);
+            if($propVal == Helper::AWZ_PROP_SYSTEM){
+                $propVal = Helper::getSystemProp($iblockId, true);
+            }
             if($request->get($key)){
-                Option::set($module_id, $key, $request->get($key).','.$request->get($key2), "");
+                Option::set($module_id, $key, $request->get($key).','.$propVal, "");
             }else{
                 Option::delete($module_id, ['name'=>$key]);
             }
@@ -74,8 +78,18 @@ if(Loader::includeModule('iblock') && !empty($checkIb)){
             '=MULTIPLE'=>'N'
         ]
     ]);
+    $checkSystem = [];
     while($data = $propRes->fetch()){
+        if(!isset($checkSystem[$data['IBLOCK_ID']])) $checkSystem[$data['IBLOCK_ID']] = false;
+        if($data['CODE'] == Helper::AWZ_PROP_SYSTEM){
+            $checkSystem[$data['IBLOCK_ID']] = true;
+        }
         $propertyList[$data['IBLOCK_ID']][$data['ID']] = '['.$data['CODE'].'] - '.$data['NAME'];
+    }
+    foreach($checkSystem as $ib=>$checkRes){
+        if($checkRes === false){
+            $propertyList[$ib][Helper::AWZ_PROP_SYSTEM] = '['.Helper::AWZ_PROP_SYSTEM.'] - '.Loc::getMessage('AWZ_RICHCONTENT_OPT_NEW_PROP');
+        }
     }
 }
 $aTabs = array();
@@ -237,9 +251,13 @@ $tabControl->Begin();
         <?$tabControl->End();?>
     </form>
     <script>
-        window.awz_sett['lang'] = {
-            'btn-start':'<?=Loc::getMessage('AWZ_RICHCONTENT_OPT_GEN_BTN')?>'
-        };
+        setTimeout(function(){
+            window.awz_sett['loc'] = {
+                'btn-start':'<?=Loc::getMessage('AWZ_RICHCONTENT_OPT_GEN_BTN')?>',
+                'progress':'<?=Loc::getMessage('AWZ_RICHCONTENT_OPT_GEN_PROGRESS')?>',
+                'finish':'<?=Loc::getMessage('AWZ_RICHCONTENT_OPT_GEN_FINISH')?>',
+            };
+        },0);
     </script>
     <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_admin.php");

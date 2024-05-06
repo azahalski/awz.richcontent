@@ -7,12 +7,18 @@ use Bitrix\Main\Text\HtmlConverter;
 use Bitrix\Main\Web\Json;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\ElementTable;
+use Bitrix\Main\Localization\Loc;
+
+Loc::loadMessages(__FILE__);
 
 class Helper {
 
     const TYPE_PREVIEW_TEXT = 'PREVIEW_TEXT';
     const TYPE_DETAIL_TEXT = 'DETAIL_TEXT';
     const TYPE_ALL_TEXT = 'ALL_TEXT';
+    const AWZ_PROP_SYSTEM = 'AWZ_RICHCONTENT_SYSTEM';
+
+    public static $propIdsCache = [];
 
     public static function getImageRich($row){
         $json = [];
@@ -237,6 +243,35 @@ class Helper {
             $text = $data['PREVIEW_TEXT'].$data['DETAIL_TEXT'];
         }
         return self::getRichText($text);
+    }
+
+    public static function getSystemProp(int $iblockId, bool $createNew = false, string $code = self::AWZ_PROP_SYSTEM): int
+    {
+        if(isset(self::$propIdsCache[$iblockId])) return self::$propIdsCache[$iblockId];
+        if(Loader::includeModule('iblock')){
+            $r = \Bitrix\Iblock\PropertyTable::getList([
+                'select'=>['ID'],
+                'filter'=>['=IBLOCK_ID'=>$iblockId, '=CODE'=>$code]
+            ]);
+            if($propData = $r->fetch()){
+                self::$propIdsCache[$iblockId] = (int) $propData['ID'];
+                return self::$propIdsCache[$iblockId];
+            }
+            if($createNew){
+                $r = \Bitrix\Iblock\PropertyTable::add([
+                    'IBLOCK_ID'=>$iblockId,
+                    'NAME'=>Loc::getMessage('AWZ_RICHCONTENT_LIB_HELPER_PROPNAME'),
+                    'CODE'=>$code,
+                    'ACTIVE'=>'Y',
+                    'PROPERTY_TYPE'=>\Bitrix\Iblock\PropertyTable::TYPE_STRING,
+                ]);
+                if($r->isSuccess()){
+                    self::$propIdsCache[$iblockId] = (int) $r->getId();
+                    return self::$propIdsCache[$iblockId];
+                }
+            }
+        }
+        return 0;
     }
 
 }

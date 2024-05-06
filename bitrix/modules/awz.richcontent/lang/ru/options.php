@@ -12,3 +12,6 @@ $MESS['AWZ_RICHCONTENT_OPT_IBLOCK_SETT_2'] = 'Описание для анонк
 $MESS['AWZ_RICHCONTENT_OPT_IBLOCK_SETT_3'] = 'Анонс + Детальное описание';
 $MESS['AWZ_RICHCONTENT_OPT_GEN'] = 'Выберите инфоблок';
 $MESS['AWZ_RICHCONTENT_OPT_GEN_BTN'] = 'Запустить обработку';
+$MESS['AWZ_RICHCONTENT_OPT_NEW_PROP'] = 'Создать новое свойство';
+$MESS['AWZ_RICHCONTENT_OPT_GEN_PROGRESS'] = 'Идет обработка';
+$MESS['AWZ_RICHCONTENT_OPT_GEN_FINISH'] = 'Обработка завершена';

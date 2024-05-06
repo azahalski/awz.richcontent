@@ -47,10 +47,14 @@ class Admin extends Controller
         return $config;
     }
 
-    public function processAction(int $IBLOCK_ID, int $IBLOCK_PROP, string $IBLOCK_SETT, int $awz_cnt, int $awz_last, int $awz_cnt_all, int $max_step_time=20){
+    public function processAction(int $IBLOCK_ID, string $IBLOCK_PROP, string $IBLOCK_SETT, int $awz_cnt, int $awz_last, int $awz_cnt_all, int $max_step_time=20){
         if(!$this->checkRequire(['rm1','rm2'])){
             $this->addError(new Error('Access denied'));
             return null;
+        }
+
+        if($IBLOCK_PROP === Helper::AWZ_PROP_SYSTEM){
+            $IBLOCK_PROP = Helper::getSystemProp($IBLOCK_ID, true);
         }
 
         $maxTime = $max_step_time + time();
@@ -109,8 +113,13 @@ class Admin extends Controller
                 '=MULTIPLE'=>'N'
             ]
         ]);
+        $checkSystem = false;
         while($data = $propRes->fetch()){
+            if($data['CODE'] === Helper::AWZ_PROP_SYSTEM) $checkSystem = true;
             $propList[$data['ID']] = '['.$data['CODE'].'] - '.$data['NAME'];
+        }
+        if(!$checkSystem){
+            $propList[$data['ID']] = '['.Helper::AWZ_PROP_SYSTEM.'] - '.Loc::getMessage('AWZ_RICHCONTENT_LIB_CONTROLLER_ADMIN_PROPNAME');
         }
 
         return $propList;
