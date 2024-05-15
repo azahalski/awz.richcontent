@@ -18,6 +18,7 @@ Loc::loadMessages(__FILE__);
 class Helper {
 
     const ALLOW_IMAGE = 4;
+    const ALLOW_TEXT = 2;
 
     const IMAGE_MAXW = 200;
     const IMAGE_MAXH = 200;
@@ -120,6 +121,7 @@ class Helper {
             if(!empty($checkImage)){
                 $json['content'][] = $checkImage;
             }elseif($row['nodeType'] == 'text' && isset($row['value']) && trim($row['value'])){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $json['content'][] = [
                     'widgetName'=>"raTextBlock",
                     'text'=>[
@@ -129,6 +131,7 @@ class Helper {
                     ]
                 ];
             }elseif($row['nodeType'] == 'paragraph'){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $bold = false;
                 $tmp = [];
                 $clistAll = [];
@@ -175,6 +178,7 @@ class Helper {
                 }
             }
             if($row['nodeType'] == 'heading-5' || $row['nodeType'] == 'heading-4'){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $json['content'][] = [
                     'widgetName'=>"raTextBlock",
                     'text'=>[
@@ -185,6 +189,7 @@ class Helper {
                 ];
             }
             if($row['nodeType'] == 'heading-3'){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $json['content'][] = [
                     'widgetName'=>"raTextBlock",
                     'text'=>[
@@ -195,6 +200,7 @@ class Helper {
                 ];
             }
             if($row['nodeType'] == 'heading-2'){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $json['content'][] = [
                     'widgetName'=>"raTextBlock",
                     'text'=>[
@@ -205,6 +211,7 @@ class Helper {
                 ];
             }
             if($row['nodeType'] == 'unordered-list'){
+                if(!$mask->check(self::ALLOW_TEXT)) continue;
                 $clist = self::createList($row);
                 if(!empty($clist)){
                     $json['content'][] = [
