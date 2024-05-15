@@ -26,9 +26,10 @@
 
 <em>получает Rich Content из HTML</em>
 
-| Параметр       |             | Описание                 |
-|----------------|-------------|--------------------------|
-| $desc `string` | Обязательно | html для преобразования  |
+| Параметр                            |                    | Описание                  |
+|-------------------------------------|--------------------|---------------------------|
+| $desc `string`                      | Обязательно        | html для преобразования   |
+| $mask `Awz\RichContent\Right\bMask` | null               | маска разрешений контента |
 
 Возвращает строку с Rich Content разметкой `json`
 
@@ -36,8 +37,9 @@
 
 ```php
 if(\Bitrix\Main\Loader::includeModule('awz.richcontent')){
+    $mask = new \Awz\RichContent\Right\bMask(\Awz\RichContent\Helper::ALLOW_TEXT | \Awz\RichContent\Helper::ALLOW_IMAGE);
     $html = '<div class="test"><p>Описание товара для <a href="https://ozon.ru">ozon.ru</a></p></div>';
-	$richJson = \Awz\RichContent\Helper::getRichText($html);
+	$richJson = \Awz\RichContent\Helper::getRichText($html, $mask);
 	//{"content":[{"widgetName":"raTextBlock","text":{"size":"size2","color":"color1","content":["Описание товара для ozon.ru"]}}],"version":0.29999999999999999}
 }
 ```
