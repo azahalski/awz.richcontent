@@ -9,10 +9,18 @@ use Bitrix\Main\Web\Json;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\IO\File;
+use Bitrix\Main\Web;
+use Bitrix\Main\File\Image;
 
 Loc::loadMessages(__FILE__);
 
 class Helper {
+
+    const ALLOW_IMAGE = 4;
+
+    const IMAGE_MAXW = 200;
+    const IMAGE_MAXH = 200;
 
     const TYPE_PREVIEW_TEXT = 'PREVIEW_TEXT';
     const TYPE_DETAIL_TEXT = 'DETAIL_TEXT';
@@ -24,6 +32,13 @@ class Helper {
     public static function getImageRich($row){
         $json = [];
         if($row['nodeType'] == 'image'){
+            $file = new File(Application::getDocumentRoot().$row['data']['src']);
+            if(!$file->isExists()) return $json;
+            if(!Web\MimeType::isImage($file->getContentType())) return $json;
+            $image = new Image($file->getPath());
+            $info = $image->getInfo();
+            if($info->getWidth() < self::IMAGE_MAXW) return $json;
+            if($info->getHeight() < self::IMAGE_MAXH) return $json;
             $json = [
                 'widgetName'=>"raShowcase",
                 'type'=>'roll',
@@ -81,7 +96,9 @@ class Helper {
         return $lists;
     }
 
-    public static function getRichText($desc){
+    public static function getRichText($desc, $mask = null){
+        if($mask && !($mask instanceof Right\bMask)) $mask = null;
+        if(!$mask) $mask = new Right\bMask();
         $desc = str_replace('<noindex>','',$desc);
         $desc = str_replace('<\/noindex>','',$desc);
         $desc = str_replace('&nbsp;',' ',$desc);
@@ -96,8 +113,10 @@ class Helper {
 
         $json = ['content'=>[],"version"=> 0.3];
         foreach($content['content'] as $row){
-            //echo'<pre>';print_r($row);echo'</pre>';
-            $checkImage = self::getImageRich($row);
+            $checkImage = [];
+            if($mask->check(self::ALLOW_IMAGE)){
+                $checkImage = self::getImageRich($row);
+            }
             if(!empty($checkImage)){
                 $json['content'][] = $checkImage;
             }elseif($row['nodeType'] == 'text' && isset($row['value']) && trim($row['value'])){
