@@ -2,9 +2,9 @@
 
 namespace Awz\RichContent\Converter;
 
-use Bitrix\Main\Text\Encoding as bxEncoding;
 use Bitrix\Main\Application;
 use Bitrix\Main\Config\Configuration;
+use Bitrix\Main\Text\Encoding as bxEncoding;
 
 class Encoding extends bxEncoding{
 
