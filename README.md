@@ -1,6 +1,6 @@
 # AWZ: Html в Rich Content (awz.richcontent)
 
-### [Установка модуля](https://github.com/zahalski/awz.richcontent/tree/main/docs/install.md)
+### [Установка модуля](https://github.com/azahalski/awz.richcontent/tree/main/docs/install.md)
 
 <!-- desc-start -->
 
@@ -49,6 +49,6 @@ if(\Bitrix\Main\Loader::includeModule('awz.richcontent')){
 <!-- cl-start -->
 ## История версий
 
-https://github.com/zahalski/awz.richcontent/blob/master/CHANGELOG.md
+https://github.com/azahalski/awz.richcontent/blob/master/CHANGELOG.md
 
 <!-- cl-end -->
